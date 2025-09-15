@@ -1,114 +1,68 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Obtener elementos del DOM ---
     const mainSunflower = document.getElementById('main-sunflower');
-    const container = document.getElementById('animation-container');
-    const particleContainer = document.getElementById('particle-container');
-    const butterfly = document.getElementById('butterfly');
-    const magicSound = document.getElementById('magic-sound');
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
+    const container = document.getElementById('sunflower-container');
+    let animationTimeout; // Variable para controlar el reinicio
 
-    let isAnimating = false;
-
-    // --- 1. Lluvia de Girasoles ---
-    const startSunflowerRain = () => {
-        if (isAnimating) return;
-        isAnimating = true;
-        
-        // Reproducir sonido y crear partículas
-        magicSound.currentTime = 0;
-        magicSound.play();
-        createParticleBurst();
-
-        const numberOfSunflowers = 30;
-        for (let i = 0; i < numberOfSunflowers; i++) {
-            setTimeout(() => {
-                createFallingSunflower();
-            }, i * 100);
-        }
-
+    // --- Funcionalidad del efecto de brillo ---
+    function applyShineEffect() {
+        mainSunflower.classList.add('shine');
         setTimeout(() => {
-            isAnimating = false;
-        }, 5000);
-    };
+            mainSunflower.classList.remove('shine');
+        }, 600); // Duración de la animación de brillo (un poco más que 0.5s)
+    }
 
-    const createFallingSunflower = (isSpecial = false) => {
-        const sunflower = document.createElement('div');
+    // --- Funcionalidad de la lluvia de girasoles ---
+    function createFallingSunflower() {
+        const sunflower = document.createElement('img');
+        sunflower.src = 'girasol.PNG';
         sunflower.classList.add('falling-sunflower');
-        if (isSpecial) {
-            // Un estilo diferente para la lluvia especial de la mariposa
-            sunflower.style.filter = 'hue-rotate(150deg) saturate(2)'; 
-        }
-        
+
+        // Posición y tamaño aleatorios para un efecto más natural
         sunflower.style.left = `${Math.random() * 100}vw`;
-        sunflower.style.animationDuration = `${Math.random() * 2 + 3}s`; // Dura entre 3 y 5s
-        const size = Math.random() * 50 + 20; // Tamaño entre 20px y 70px
-        sunflower.style.width = `${size}px`;
-        sunflower.style.height = `${size}px`;
+        const randomSize = Math.random() * 40 + 20; // Tamaño entre 20px y 60px
+        sunflower.style.width = `${randomSize}px`;
+        sunflower.style.animationDuration = `${Math.random() * 2 + 4}s`; // Duración de caída entre 4 y 6s
 
         container.appendChild(sunflower);
 
-        sunflower.addEventListener('animationend', () => {
+        // Elimina el girasol del DOM después de que termine la animación
+        setTimeout(() => {
             sunflower.remove();
-        });
-    };
+        }, 6000); // Un poco más que la duración máxima de la animación
+    }
 
+    // Función principal para iniciar la lluvia de girasoles
+    function startSunflowerRain() {
+        applyShineEffect(); // Llama al efecto de brillo al iniciar la lluvia
+
+        // Desactiva el clic temporalmente para evitar múltiples activaciones
+        mainSunflower.style.pointerEvents = 'none';
+
+        // Crea girasoles a intervalos durante 5 segundos
+        const rainInterval = setInterval(createFallingSunflower, 100);
+
+        // Detiene la creación de nuevos girasoles después de 5 segundos
+        setTimeout(() => {
+            clearInterval(rainInterval);
+        }, 5000);
+
+        // Reinicia la animación y reactiva el clic después de 9 segundos
+        clearTimeout(animationTimeout); // Limpia cualquier reinicio anterior
+        animationTimeout = setTimeout(() => {
+            mainSunflower.style.pointerEvents = 'auto'; // Vuelve a hacer el girasol clicable
+        }, 9000);
+    }
+
+    // Evento de clic en el girasol principal
     mainSunflower.addEventListener('click', startSunflowerRain);
 
-    // --- 2. Explosión de Partículas ---
-    const createParticleBurst = () => {
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            
-            const x = (Math.random() - 0.5) * 400; // Dispersión horizontal
-            const y = (Math.random() - 0.5) * 400; // Dispersión vertical
-            
-            particle.style.setProperty('--x', `${x}px`);
-            particle.style.setProperty('--y', `${y}px`);
-            
-            // Posicionamos las partículas en el centro del contenedor
-            particle.style.left = '50%';
-            particle.style.top = '50%';
-            const size = Math.random() * 8 + 2; // Tamaño entre 2px y 10px
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            
-            particleContainer.appendChild(particle);
+    // --- Funcionalidad de la mariposa ---
+    function createButterfly() {
+        const butterfly = document.createElement('div');
+        butterfly.classList.add('butterfly');
+        container.appendChild(butterfly);
+    }
 
-            particle.addEventListener('animationend', () => {
-                particle.remove();
-            });
-        }
-    };
-
-    // --- 3. Mariposa Interactiva ---
-    const triggerSpecialRain = () => {
-        if (isAnimating) return;
-        isAnimating = true;
-        magicSound.play();
-
-        for (let i = 0; i < 50; i++) { // Más girasoles y de colores
-            setTimeout(() => {
-                createFallingSunflower(true);
-            }, i * 50);
-        }
-        
-        setTimeout(() => {
-            isAnimating = false;
-        }, 5000);
-    };
-
-    butterfly.addEventListener('click', triggerSpecialRain);
-
-    // --- 4. Ciclo de Día/Noche ---
-    themeToggle.addEventListener('change', () => {
-        if (themeToggle.checked) {
-            body.classList.remove('day');
-            body.classList.add('night');
-        } else {
-            body.classList.remove('night');
-            body.classList.add('day');
-        }
-    });
+    // Llama a la función para crear la mariposa al cargar la página
+    createButterfly();
 });
