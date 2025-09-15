@@ -1,0 +1,162 @@
+/* --- Estilos Generales y Ciclo Día/Noche --- */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 1.5s ease;
+    font-family: sans-serif;
+}
+
+body.day {
+    background-color: #FCEE8B; /* Amarillo día */
+}
+
+body.night {
+    background: linear-gradient(to bottom, #000428, #004e92); /* Azul noche */
+}
+
+/* --- Contenedor Principal y Girasol --- */
+#animation-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-sunflower {
+    width: 150px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+}
+
+#main-sunflower:hover {
+    transform: scale(1.15);
+}
+
+body.night #main-sunflower {
+    filter: brightness(0.7); /* El girasol se oscurece un poco de noche */
+}
+
+/* --- Lluvia de Girasoles --- */
+.falling-sunflower {
+    position: absolute;
+    top: -150px;
+    background-image: url('https://i.imgur.com/Y0iH5Vl.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: fall linear forwards;
+    z-index: 1;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* --- Partículas Brillantes --- */
+.particle {
+    position: absolute;
+    background-color: #FFDF00;
+    border-radius: 50%;
+    animation: burst 0.8s ease-out forwards;
+    z-index: 99;
+}
+
+@keyframes burst {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0) translate(var(--x), var(--y));
+        opacity: 0;
+    }
+}
+
+/* --- Mariposa Interactiva --- */
+#butterfly {
+    position: absolute;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 200;
+    animation: fly 15s infinite linear;
+    transition: transform 0.2s;
+}
+
+#butterfly:hover {
+    transform: scale(1.5);
+}
+
+@keyframes fly {
+    0% { top: 20%; left: -10%; }
+    25% { top: 50%; left: 110%; }
+    50% { top: 80%; left: -10%; }
+    75% { top: 10%; left: 110%; }
+    100% { top: 20%; left: -10%; }
+}
+
+/* --- Switch de Día/Noche --- */
+.theme-switcher-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-switcher {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.theme-switcher input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "☀️";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+    content: "🌙";
+}
