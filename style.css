@@ -47,7 +47,8 @@ body.night #main-sunflower {
 .falling-sunflower {
     position: absolute;
     top: -150px;
-    background-image: url('https://i.imgur.com/Y0iH5Vl.png');
+    /* LÍNEA NUEVA Y FUNCIONAL */
+    background-image: url('https://i.imgur.com/gG8OFKE.png');
     background-size: contain;
     background-repeat: no-repeat;
     animation: fall linear forwards;
