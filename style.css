@@ -20,10 +20,10 @@ body, html {
 #main-sunflower {
     width: 150px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Añadimos box-shadow a la transición */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: pulse 2s infinite ease-in-out;
-    border-radius: 50%; /* Para que el brillo se vea como un halo alrededor */
-    box-shadow: 0 0 0 rgba(255, 255, 0, 0); /* Sombra inicial transparente */
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(255, 255, 0, 0);
 }
 
 #main-sunflower:hover {
@@ -32,7 +32,7 @@ body, html {
 
 /* Efecto de brillo al pulsar */
 #main-sunflower.shine {
-    animation: shineEffect 0.5s forwards; /* Aplica la animación de brillo */
+    animation: shineEffect 0.5s forwards;
 }
 
 @keyframes shineEffect {
@@ -40,14 +40,13 @@ body, html {
         box-shadow: 0 0 0 0 rgba(255, 255, 0, 0);
     }
     50% {
-        box-shadow: 0 0 40px 10px rgba(255, 255, 0, 0.8), /* Brillo amarillo fuerte */
-                    0 0 80px 20px rgba(255, 255, 200, 0.5); /* Halo más suave */
+        box-shadow: 0 0 40px 10px rgba(255, 255, 0, 0.8),
+                    0 0 80px 20px rgba(255, 255, 200, 0.5);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(255, 255, 0, 0); /* Desaparece el brillo */
+        box-shadow: 0 0 0 0 rgba(255, 255, 0, 0);
     }
 }
-
 
 /* Estilo para los girasoles que caen */
 .falling-sunflower {
@@ -79,22 +78,22 @@ body, html {
     }
 }
 
-/* Estilos para la mariposa */
+/* Estilos para la mariposa - MODIFICADO */
 .butterfly {
     position: absolute;
-    width: 40px; /* Tamaño de la mariposa */
-    height: 40px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%2387CEEB" d="M50,0 C20,0 0,20 0,50 C0,80 20,100 50,100 C80,100 100,80 100,50 C100,20 80,0 50,0 Z M50,20 C65,20 70,35 70,50 C70,65 65,80 50,80 C35,80 30,65 30,50 C30,35 35,20 50,20 Z" transform="scale(0.8) translate(10,10)" /><path fill="%234682B4" d="M50,20 C60,30 60,40 50,50 C40,40 40,30 50,20 Z M50,80 C60,70 60,60 50,50 C40,60 40,70 50,80 Z" /></svg>'); /* Mariposa SVG celeste */
-    background-size: contain;
+    width: 40px; /* Ajusta el tamaño si tu imagen es muy grande o pequeña */
+    height: 40px; /* Mantén el mismo ancho y alto para que no se deforme */
+    background-image: url('mariposa.PNG'); /* <-- ¡Aquí usamos tu imagen! */
+    background-size: contain; /* Ajusta la imagen dentro del div */
     background-repeat: no-repeat;
-    animation: floatAndWander 15s infinite ease-in-out; /* Animación de flotar y deambular */
-    z-index: 10; /* Asegura que esté por encima de otros elementos */
+    animation: floatAndWander 15s infinite ease-in-out;
+    z-index: 10;
 }
 
 /* Animación para que la mariposa flote y deambule */
 @keyframes floatAndWander {
     0% {
-        transform: translate(0, 0) scaleX(1); /* Empieza en su posición inicial, mirando a la derecha */
+        transform: translate(0, 0) scaleX(1);
         left: 10%;
         top: 20%;
     }
@@ -104,7 +103,7 @@ body, html {
         top: 35%;
     }
     50% {
-        transform: translate(50vw, -10vh) scaleX(-1); /* Gira para mirar a la izquierda */
+        transform: translate(50vw, -10vh) scaleX(-1);
         left: 60%;
         top: 10%;
     }
@@ -114,7 +113,7 @@ body, html {
         top: 25%;
     }
     100% {
-        transform: translate(0, 0) scaleX(1); /* Vuelve a la posición inicial, mirando a la derecha */
+        transform: translate(0, 0) scaleX(1);
         left: 10%;
         top: 20%;
     }
