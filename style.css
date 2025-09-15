@@ -48,7 +48,7 @@ body.night #main-sunflower {
     position: absolute;
     top: -150px;
     /* Ahora busca la imagen local "girasol.png" */
-    background-image: url('girasol.png');
+    background-image: url('girasol.PNG');
     background-size: contain;
     background-repeat: no-repeat;
     animation: fall linear forwards;
