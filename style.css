@@ -1,163 +1,121 @@
-/* --- Estilos Generales y Ciclo Día/Noche --- */
-body {
+body, html {
     margin: 0;
     padding: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-    transition: background-color 1.5s ease;
+    background-color: #FFDE00;
     font-family: sans-serif;
 }
 
-body.day {
-    background-color: #FCEE8B; /* Amarillo día */
-}
-
-body.night {
-    background: linear-gradient(to bottom, #000428, #004e92); /* Azul noche */
-}
-
-/* --- Contenedor Principal y Girasol --- */
-#animation-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
+#sunflower-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 
 #main-sunflower {
     width: 150px;
-    height: auto;
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-    z-index: 100;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Añadimos box-shadow a la transición */
+    animation: pulse 2s infinite ease-in-out;
+    border-radius: 50%; /* Para que el brillo se vea como un halo alrededor */
+    box-shadow: 0 0 0 rgba(255, 255, 0, 0); /* Sombra inicial transparente */
 }
 
 #main-sunflower:hover {
-    transform: scale(1.15);
+    transform: scale(1.1);
 }
 
-body.night #main-sunflower {
-    filter: brightness(0.7);
+/* Efecto de brillo al pulsar */
+#main-sunflower.shine {
+    animation: shineEffect 0.5s forwards; /* Aplica la animación de brillo */
 }
 
-/* --- Lluvia de Girasoles --- */
-.falling-sunflower {
-    position: absolute;
-    top: -150px;
-    /* Ahora busca la imagen local "girasol.png" */
-    background-image: url('girasol.PNG');
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: fall linear forwards;
-    z-index: 1;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-/* --- Partículas Brillantes --- */
-.particle {
-    position: absolute;
-    background-color: #FFDF00;
-    border-radius: 50%;
-    animation: burst 0.8s ease-out forwards;
-    z-index: 99;
-}
-
-@keyframes burst {
+@keyframes shineEffect {
     0% {
-        transform: scale(1);
-        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(255, 255, 0, 0);
+    }
+    50% {
+        box-shadow: 0 0 40px 10px rgba(255, 255, 0, 0.8), /* Brillo amarillo fuerte */
+                    0 0 80px 20px rgba(255, 255, 200, 0.5); /* Halo más suave */
     }
     100% {
-        transform: scale(0) translate(var(--x), var(--y));
-        opacity: 0;
+        box-shadow: 0 0 0 0 rgba(255, 255, 0, 0); /* Desaparece el brillo */
     }
 }
 
-/* --- Mariposa Interactiva --- */
-#butterfly {
+
+/* Estilo para los girasoles que caen */
+.falling-sunflower {
     position: absolute;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 200;
-    animation: fly 15s infinite linear;
-    transition: transform 0.2s;
+    top: -100px;
+    width: 50px;
+    height: auto;
+    animation: fall 5s linear forwards;
 }
 
-#butterfly:hover {
-    transform: scale(1.5);
+/* Animación de la caída */
+@keyframes fall {
+    to {
+        top: 110%;
+        transform: rotate(720deg);
+    }
 }
 
-@keyframes fly {
-    0% { top: 20%; left: -10%; }
-    25% { top: 50%; left: 110%; }
-    50% { top: 80%; left: -10%; }
-    75% { top: 10%; left: 110%; }
-    100% { top: 20%; left: -10%; }
+/* Animación de latido para el girasol central */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
-/* --- Switch de Día/Noche --- */
-.theme-switcher-container {
+/* Estilos para la mariposa */
+.butterfly {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+    width: 40px; /* Tamaño de la mariposa */
+    height: 40px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%2387CEEB" d="M50,0 C20,0 0,20 0,50 C0,80 20,100 50,100 C80,100 100,80 100,50 C100,20 80,0 50,0 Z M50,20 C65,20 70,35 70,50 C70,65 65,80 50,80 C35,80 30,65 30,50 C30,35 35,20 50,20 Z" transform="scale(0.8) translate(10,10)" /><path fill="%234682B4" d="M50,20 C60,30 60,40 50,50 C40,40 40,30 50,20 Z M50,80 C60,70 60,60 50,50 C40,60 40,70 50,80 Z" /></svg>'); /* Mariposa SVG celeste */
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: floatAndWander 15s infinite ease-in-out; /* Animación de flotar y deambular */
+    z-index: 10; /* Asegura que esté por encima de otros elementos */
 }
 
-.theme-switcher {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-
-.theme-switcher input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "☀️";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-    content: "🌙";
+/* Animación para que la mariposa flote y deambule */
+@keyframes floatAndWander {
+    0% {
+        transform: translate(0, 0) scaleX(1); /* Empieza en su posición inicial, mirando a la derecha */
+        left: 10%;
+        top: 20%;
+    }
+    25% {
+        transform: translate(30vw, 15vh) scaleX(1);
+        left: 40%;
+        top: 35%;
+    }
+    50% {
+        transform: translate(50vw, -10vh) scaleX(-1); /* Gira para mirar a la izquierda */
+        left: 60%;
+        top: 10%;
+    }
+    75% {
+        transform: translate(20vw, 5vh) scaleX(-1);
+        left: 30%;
+        top: 25%;
+    }
+    100% {
+        transform: translate(0, 0) scaleX(1); /* Vuelve a la posición inicial, mirando a la derecha */
+        left: 10%;
+        top: 20%;
+    }
 }
