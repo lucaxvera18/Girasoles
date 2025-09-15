@@ -40,15 +40,15 @@ body.night {
 }
 
 body.night #main-sunflower {
-    filter: brightness(0.7); /* El girasol se oscurece un poco de noche */
+    filter: brightness(0.7);
 }
 
 /* --- Lluvia de Girasoles --- */
 .falling-sunflower {
     position: absolute;
     top: -150px;
-    /* LÍNEA NUEVA Y FUNCIONAL */
-    background-image: url('https://i.imgur.com/gG8OFKE.png');
+    /* Ahora busca la imagen local "girasol.png" */
+    background-image: url('girasol.png');
     background-size: contain;
     background-repeat: no-repeat;
     animation: fall linear forwards;
