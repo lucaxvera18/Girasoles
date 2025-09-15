@@ -2,29 +2,125 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Girasol Mágico 🌻</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Girasol Interactivo 🌻</title>
+    <style>
+        /* Estilos Generales y de Fondo */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #FFD700; /* Fondo amarillo */
+            overflow: hidden; /* Evita barras de scroll innecesarias */
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Contenedor principal para centrar elementos */
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Girasol central */
+        #girasol-central {
+            width: 150px; /* Tamaño inicial, ajustable */
+            height: auto;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.3s ease; /* Transición suave al tocar */
+        }
+
+        /* Efecto al pasar el mouse o tocar */
+        #girasol-central:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        /* Girasol para la lluvia (plantilla) */
+        .girasol-lluvia {
+            position: absolute;
+            top: -150px; /* Inicia fuera de la pantalla */
+            background-image: url('girasol.PNG');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none; /* Para que no interfieran con el clic */
+            animation: lluvia 5s linear;
+        }
+
+        /* Animación de la lluvia */
+        @keyframes lluvia {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(120vh) rotate(720deg); /* Cae y gira */
+                opacity: 0;
+            }
+        }
+
+    </style>
 </head>
-<body class="day">
+<body>
 
-    <div class="theme-switcher-container">
-        <label class="theme-switcher">
-            <input type="checkbox" id="theme-toggle">
-            <span class="slider"></span>
-        </label>
+    <div class="container" id="animation-container">
+        <img src="girasol.PNG" alt="Girasol" id="girasol-central">
     </div>
 
-    <div id="animation-container">
-        <div id="particle-container"></div>
-        
-        <img src="girasol.PNG" alt="Girasol Principal" id="main-sunflower">
-        
-        <div id="butterfly">🦋</div>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const girasolCentral = document.getElementById('girasol-central');
+            const container = document.getElementById('animation-container');
+            let animacionActiva = false;
 
-    <audio id="magic-sound" src="sonido.mp3" preload="auto"></audio>
+            // Función para iniciar la lluvia de girasoles
+            function iniciarLluvia() {
+                if (animacionActiva) return; // Si ya está activa, no hacer nada
+                animacionActiva = true;
 
-    <script src="script.js"></script>
+                const cantidadGirasoles = 30; // Puedes ajustar este número
+
+                for (let i = 0; i < cantidadGirasoles; i++) {
+                    const girasol = document.createElement('div');
+                    girasol.classList.add('girasol-lluvia');
+                    
+                    // Propiedades aleatorias para cada girasol
+                    const tamano = Math.random() * 60 + 20; // Tamaño entre 20px y 80px
+                    girasol.style.width = `${tamano}px`;
+                    girasol.style.height = `${tamano}px`;
+                    girasol.style.left = `${Math.random() * 100}vw`; // Posición horizontal aleatoria
+                    girasol.style.animationDelay = `${Math.random() * 2}s`; // Retraso aleatorio para que no caigan todos juntos
+                    girasol.style.animationDuration = `${Math.random() * 2 + 3}s`; // Duración aleatoria entre 3s y 5s
+
+                    container.appendChild(girasol);
+
+                    // Eliminar el girasol del DOM después de que termine la animación
+                    setTimeout(() => {
+                        girasol.remove();
+                    }, 5000);
+                }
+
+                // Reiniciar la bandera de animación después de 5 segundos
+                setTimeout(() => {
+                    animacionActiva = false;
+                }, 5000);
+            }
+
+            // Event Listeners para tocar o hacer clic
+            girasolCentral.addEventListener('click', iniciarLluvia);
+            girasolCentral.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Previene el "clic fantasma" en móviles
+                iniciarLluvia();
+            });
+        });
+    </script>
+
 </body>
 </html>
